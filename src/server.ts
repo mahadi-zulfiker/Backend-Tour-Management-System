@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import { Server } from "http";
 import { envVars } from "./app/config/env";
+import { seedSuperAdmin } from "./app/utils/seedSuperAdmin";
 
 let server: Server;
 
@@ -20,7 +21,10 @@ const startServer = async () => {
   }
 };
 
-startServer();
+(async () => {
+  await startServer();
+  await seedSuperAdmin();
+})();
 
 process.on("unhandledRejection", (err) => {
   console.log("Unhandled Rejection", err);
@@ -51,7 +55,7 @@ process.on("uncaughtException", (err) => {
 // throw new Error("Unhandled Exception");
 
 process.on("SIGTERM", () => {
-  console.log("Unhandled SIGTERM",);
+  console.log("Unhandled SIGTERM");
 
   if (server) {
     server.close(() => {
@@ -63,7 +67,7 @@ process.on("SIGTERM", () => {
 });
 
 process.on("SIGINT", () => {
-  console.log("Unhandled SIGINT",);
+  console.log("Unhandled SIGINT");
 
   if (server) {
     server.close(() => {
