@@ -1,2 +1,6 @@
 node_modules
-config.bat
+
+# env files
+.env
+.env*
+!.env.example
